@@ -8,7 +8,7 @@ from typing import Union, Callable
 
 
 def make_multiplier(multiplier: float) -> Callable[[float], float]:
-    """Function that returns a function that multiplies a float by multiplier"""
+    """Func that returns a func that multiplies a float by multiplier"""
     def multiply(n: float) -> float:
         return n * multiplier
     return multiply
