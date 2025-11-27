@@ -2,7 +2,6 @@
 """Async Generator that yields a random number"""
 
 
-import asyncio
 from typing import List
 
 
