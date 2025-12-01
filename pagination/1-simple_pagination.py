@@ -41,6 +41,7 @@ class Server:
         assert isinstance(page_size, int) and page_size > 0, "doit être +"
 
         li = []
+        # s_pagination, e_pagination = index_range(page, page_size)
         s_pagination, e_pagination = index_range(page, page_size)
         dataset = self.dataset()
 

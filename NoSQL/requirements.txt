@@ -1,0 +1,16 @@
+echo "deb http://security.ubuntu.com/ubuntu focal-security main" | sudo tee /etc/apt/sources.list.d/focal-security.list
+sudo apt update
+sudo apt install -y libssl1.1
+sudo rm /etc/apt/sources.list.d/focal-security.list
+sudo apt update
+
+curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+sudo apt update
+
+sudo apt install -y mongodb-org
+
+sudo mkdir -p /var/lib/mongodb /var/log/mongodb
+sudo chown -R mongodb:mongodb /var/lib/mongodb /var/log/mongodb
+
+sudo -u mongodb /usr/bin/mongod --config /etc/mongod.conf &
