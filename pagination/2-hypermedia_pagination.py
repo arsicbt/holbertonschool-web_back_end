@@ -51,6 +51,7 @@ class Server:
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> List[list]:
         """ Returns a dictionary containing the following key-value pairs """
+
         # recuperation des data de la page actuelle
         data = self.get_page(page, page_size)
 
@@ -58,7 +59,7 @@ class Server:
         # ceil: arrondi au positif
         total_pages = math.ceil(total_lines / page_size)
 
-        next_page = page + 1 if page < totals_pages else None
+        next_page = page + 1 if page < total_pages else None
         prev_page = page - 1 if page > 1 else None
 
         return {
