@@ -9,7 +9,5 @@ from pymongo import MongoClient
 
 def insert_school(mongo_collection, **kwargs):
     """Inserts a new document in a MongoDB collection."""
-    li = []
-    for to_insert in mongo_collection.find():
-        li.insert(kwarg)
-    return li
+    inserted = mongo_collection.insert_one(kwargs)
+    return inserted.inserted_ids
