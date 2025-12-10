@@ -20,10 +20,12 @@ export default class Airport {
     return this._code;
   }
 
+  // Overrides the default toString() method
   toString() {
     return `[object ${this._code}]`;
   }
 
+  // Special symbol that customizes the object's description tag
   get [Symbol.toStringTag]() {
     return this._code;
   }
