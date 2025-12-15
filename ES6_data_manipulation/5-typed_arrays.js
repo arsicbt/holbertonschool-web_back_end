@@ -1,6 +1,6 @@
 export default function createInt8TypedArray(length, position, value) {
   if(!Number(length) || !Number(position) || !Number(value))
-    throw new Error('"Bad Argument: not a number');
+    console.log('"Bad Argument: not a number');
 
   if(position >= length || position < 0)
     throw new Error('Position outside range');
