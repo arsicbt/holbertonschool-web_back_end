@@ -7,7 +7,7 @@ export default function cleanSet(set, startString) {
   if (!startString) return '';
 
   if (typeof startString !== 'string') {
-    throw new Error('Bad argument: Bad argument(s) type(s)');
+    return '';
   }
 
   const filteredOutput = [...set]
