@@ -1,4 +1,4 @@
-import * as Utils from '../utils.js';
+import * as Utils from '../utils';
 
 export default function handleProfileSignup() {
   // all: résoudre les promises ensemble (prend un tab)
