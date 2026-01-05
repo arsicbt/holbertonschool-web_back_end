@@ -7,8 +7,7 @@ process.stdin.setEncoding('utf8');
 // ecoute l'entrée utilisateur
 process.stdin.on('data', (data) => {
   // enleve la saut de ligne + affiche le nom
-  const name = data.trim();
-  process.stdout.write(`Your name is: ${name}\n`);
+  process.stdout.write(`Your name is: ${data}`);
 });
 
 // ecoute la fin de stdin (Ctrl+D)
