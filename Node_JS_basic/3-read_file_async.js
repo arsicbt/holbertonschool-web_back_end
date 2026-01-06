@@ -8,13 +8,13 @@ async function countStudents(path) {
     // 'utf8' = encodage pour lire en texte (pas en binaire)
     // 'await' = attend que la lecture soit terminée
     const data = await fs.readFile(path, 'utf8');
-    
+
     // Diviser le contenu en lignes et supprimer les lignes vides
     // split('\n') = sépare à chaque saut de ligne
     // filter() = garde seulement les lignes non-vides
     // trim() = enlève les espaces avant/après
     const lines = data.split('\n').filter((line) => line.trim() !== '');
-    
+
     // Vérifier qu'il y a au moins 2 lignes (header + 1 étudiant minimum)
     // Si <= 1 ligne, le fichier est invalide
     if (lines.length <= 1) {
@@ -24,7 +24,7 @@ async function countStudents(path) {
     // Extraire toutes les lignes sauf la première (qui est le header)
     // slice(1) = prend tout à partir de l'index 1
     const students = lines.slice(1);
-    
+
     // Créer un objet vide pour grouper les étudiants par domaine
     // Format final : { CS: ['Johann', 'Arielle'], SWE: ['Paul'] }
     const fields = {};
