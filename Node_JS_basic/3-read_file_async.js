@@ -35,7 +35,7 @@ async function countStudents(path) {
       // split(',') = sépare la ligne à chaque virgule
       // Les ", ," ignorent le 2ème et 3ème élément (lastname et age)
       const [firstname, , , field] = line.split(',');
-      
+
       // Vérifier que firstname et field existent (protection contre lignes mal formatées)
       if (firstname && field) {
         // Si ce domaine n'existe pas encore dans l'objet, créer un tableau vide
@@ -52,7 +52,7 @@ async function countStudents(path) {
     // reduce() = additionne la longueur de chaque tableau
     // sum = accumulateur qui commence à 0
     const totalStudents = Object.values(fields).reduce((sum, list) => sum + list.length, 0);
-    
+
     // Afficher le nombre total d'étudiants
     console.log(`Number of students: ${totalStudents}`);
 
@@ -61,7 +61,7 @@ async function countStudents(path) {
     Object.keys(fields).forEach((field) => {
       // Récupérer le tableau des prénoms pour ce domaine
       const list = fields[field];
-      
+
       // Afficher le nombre d'étudiants et la liste des prénoms
       // list.length = nombre d'étudiants dans ce domaine
       // list.join(', ') = joint tous les prénoms avec des virgules
