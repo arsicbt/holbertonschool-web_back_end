@@ -1,3 +1,4 @@
+// 5-http.js
 const http = require('http');
 const path = require('path');
 const countStudents = require('./3-read_file_async');
@@ -9,13 +10,15 @@ const app = http.createServer((req, res) => {
 
   if (req.url === '/') {
     res.statusCode = 200;
-    return res.end('Hello Holberton School!');
+    res.end('Hello Holberton School!');
+    return null;
   }
 
   if (req.url === '/students') {
     if (!database) {
       res.statusCode = 500;
-      return res.end('Cannot load the database');
+      res.end('Cannot load the database');
+      return null;
     }
 
     countStudents(database)
@@ -27,12 +30,13 @@ const app = http.createServer((req, res) => {
         res.statusCode = 500;
         res.end('Cannot load the database');
       });
-    return;
+
+    return null;
   }
 
-  // Optional: handle unknown routes
   res.statusCode = 404;
   res.end('Not found');
+  return null;
 });
 
 app.listen(1245, () => {
