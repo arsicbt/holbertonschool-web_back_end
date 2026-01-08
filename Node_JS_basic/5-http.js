@@ -1,29 +1,38 @@
 const http = require('http');
+const path = require('path');
 const countStudents = require('./3-read_file_async');
 
-const database = process.argv[2];
+const database = process.argv[2] ? path.resolve(process.argv[2]) : null;
 
 const app = http.createServer((req, res) => {
-  res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
 
   if (req.url === '/') {
-    res.end('Hello Holberton School!');
-    return;
+    res.statusCode = 200;
+    return res.end('Hello Holberton School!');
   }
 
   if (req.url === '/students') {
+    if (!database) {
+      res.statusCode = 500;
+      return res.end('Cannot load the database');
+    }
+
     countStudents(database)
       .then((output) => {
+        res.statusCode = 200;
         res.end(`This is the list of our students\n${output}`);
       })
       .catch(() => {
         res.statusCode = 500;
         res.end('Cannot load the database');
       });
+    return;
   }
+
+  // Optional: handle unknown routes
   res.statusCode = 404;
-  res.setHeader('Content-Type', 'text/plain');
+  res.end('Not found');
 });
 
 app.listen(1245, () => {
