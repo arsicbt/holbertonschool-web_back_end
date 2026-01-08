@@ -8,6 +8,16 @@ const database = process.argv[2] ? path.resolve(process.argv[2]) : null;
 const app = http.createServer((req, res) => {
   res.setHeader('Content-Type', 'text/plain');
 
+  countStudents(database)
+    .then((output) => {
+      res.statusCode = 200;
+      res.end(`This is the list of our students\n${output}`);
+    })
+    .catch(() => {
+      res.statusCode = 500;
+      res.end('Cannot load the database');
+    });
+
   if (req.url === '/') {
     res.statusCode = 200;
     res.end('Hello Holberton School!');
@@ -20,16 +30,6 @@ const app = http.createServer((req, res) => {
       res.end('Cannot load the database');
       return null;
     }
-
-    countStudents(database)
-      .then((output) => {
-        res.statusCode = 200;
-        res.end(`This is the list of our students\n${output}`);
-      })
-      .catch(() => {
-        res.statusCode = 500;
-        res.end('Cannot load the database');
-      });
 
     return null;
   }
