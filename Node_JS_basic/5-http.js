@@ -9,16 +9,18 @@ const app = http.createServer((req, res) => {
 
   if (req.url === '/') {
     res.end('Hello Holberton School!');
+    return;
   }
 
   if (req.url === '/students') {
-    res.write('This is the list of our students\n');
-
     countStudents(database)
       .then((output) => {
-        res.end(output);
+        const response =
+          'This is the list of our students\n' + output;
+        res.end(response);
       })
       .catch(() => {
+        res.statusCode = 500;
         res.end('Cannot load the database');
       });
   }

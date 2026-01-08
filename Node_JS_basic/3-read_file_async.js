@@ -1,7 +1,7 @@
 // Importer le module File System avec la version Promises (asynchrone)
 const fs = require('fs').promises;
 
-// Fonction asynchrone qui compte et affiche les étudiants d'un fichier CSV
+// Fonction asynchrone qui compte et retourne les étudiants d'un fichier CSV
 async function countStudents(path) {
   try {
     // Lire le fichier de manière asynchrone
@@ -47,14 +47,17 @@ async function countStudents(path) {
       }
     });
 
+    // Construire la sortie finale dans une string (au lieu de console.log)
+    let output = '';
+
     // Calculer le nombre total d'étudiants
     // Object.values(fields) = extrait tous les tableaux de prénoms
     // reduce() = additionne la longueur de chaque tableau
     // sum = accumulateur qui commence à 0
     const totalStudents = Object.values(fields).reduce((sum, list) => sum + list.length, 0);
 
-    // Afficher le nombre total d'étudiants
-    console.log(`Number of students: ${totalStudents}`);
+    // Ajouter le nombre total d'étudiants à la string
+    output += `Number of students: ${totalStudents}\n`;
 
     // Parcourir chaque domaine (CS, SWE, etc.)
     // Object.keys(fields) = extrait les noms des domaines
@@ -62,11 +65,14 @@ async function countStudents(path) {
       // Récupérer le tableau des prénoms pour ce domaine
       const list = fields[field];
 
-      // Afficher le nombre d'étudiants et la liste des prénoms
+      // Ajouter le nombre d'étudiants et la liste des prénoms à la string
       // list.length = nombre d'étudiants dans ce domaine
       // list.join(', ') = joint tous les prénoms avec des virgules
-      console.log(`Number of students in ${field}: ${list.length}. List: ${list.join(', ')}`);
+      output += `Number of students in ${field}: ${list.length}. List: ${list.join(', ')}\n`;
     });
+
+    // Retourner la string complète (pour le serveur)
+    return output.trim(); // trim() pour enlever le dernier saut de ligne inutile
   } catch (err) {
     // Si une erreur survient (fichier introuvable, etc.), lancer cette erreur
     throw new Error('Cannot load the database');
