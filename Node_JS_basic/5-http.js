@@ -15,9 +15,7 @@ const app = http.createServer((req, res) => {
   if (req.url === '/students') {
     countStudents(database)
       .then((output) => {
-        const response =
-          'This is the list of our students\n' + output;
-        res.end(response);
+        res.end(`This is the list of our students\n${output}`);
       })
       .catch(() => {
         res.statusCode = 500;
