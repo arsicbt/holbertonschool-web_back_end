@@ -1,83 +1,46 @@
-// Importer le module File System avec la version Promises (asynchrone)
-const fs = require('fs').promises;
+const fs = require('fs');
 
-// Fonction asynchrone qui compte et retourne les étudiants d'un fichier CSV
-async function countStudents(path) {
-  try {
-    // Lire le fichier de manière asynchrone
-    // 'utf8' = encodage pour lire en texte (pas en binaire)
-    // 'await' = attend que la lecture soit terminée
-    const data = await fs.readFile(path, 'utf8');
+function countStudents(path) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, 'utf8', (err, data) => {
+      if (err) {
+        reject(new Error('Cannot load the database'));
+        return;
+      }
 
-    // Diviser le contenu en lignes et supprimer les lignes vides
-    // split('\n') = sépare à chaque saut de ligne
-    // filter() = garde seulement les lignes non-vides
-    // trim() = enlève les espaces avant/après
-    const lines = data.split('\n').filter((line) => line.trim() !== '');
+      const lines = data
+        .trim()
+        .split('\n')
+        .filter((line) => line.trim() !== '');
 
-    // Vérifier qu'il y a au moins 2 lignes (header + 1 étudiant minimum)
-    // Si <= 1 ligne, le fichier est invalide
-    if (lines.length <= 1) {
-      throw new Error('Cannot load the database');
-    }
+      const students = lines.slice(1).map((line) =>
+        line.split(',').map((value) => value.trim())
+      );
 
-    // Extraire toutes les lignes sauf la première (qui est le header)
-    // slice(1) = prend tout à partir de l'index 1
-    const students = lines.slice(1);
+      const output = [];
+      output.push('Number of students: ${students.length}');
 
-    // Créer un objet vide pour grouper les étudiants par domaine
-    // Format final : { CS: ['Johann', 'Arielle'], SWE: ['Paul'] }
-    const fields = {};
+      const fields = {};
 
-    // Parcourir chaque ligne d'étudiant
-    students.forEach((line) => {
-      // Destructuring : extraire firstname (1er élément) et field (4ème élément)
-      // split(',') = sépare la ligne à chaque virgule
-      // Les ", ," ignorent le 2ème et 3ème élément (lastname et age)
-      const [firstname, , , field] = line.split(',');
+      students.forEach((student) => {
+        const firstname = student[0];
+        const field = student[3];
 
-      // Vérifier que firstname et field existent (protection contre lignes mal formatées)
-      if (firstname && field) {
-        // Si ce domaine n'existe pas encore dans l'objet, créer un tableau vide
         if (!fields[field]) {
           fields[field] = [];
         }
-        // Ajouter le prénom dans le tableau du domaine correspondant
         fields[field].push(firstname);
-      }
+      });
+
+      Object.keys(fields).forEach((field) => {
+        output.push(
+          'Number of students in ${field}: ${fields[field].length}. List: ${fields[field].join(', ')}',
+        );
+      });
+
+      resolve(output);
     });
-
-    // Construire la sortie finale dans une string (au lieu de console.log)
-    let output = '';
-
-    // Calculer le nombre total d'étudiants
-    // Object.values(fields) = extrait tous les tableaux de prénoms
-    // reduce() = additionne la longueur de chaque tableau
-    // sum = accumulateur qui commence à 0
-    const totalStudents = Object.values(fields).reduce((sum, list) => sum + list.length, 0);
-
-    // Ajouter le nombre total d'étudiants à la string
-    output += `Number of students: ${totalStudents}\n`;
-
-    // Parcourir chaque domaine (CS, SWE, etc.)
-    // Object.keys(fields) = extrait les noms des domaines
-    Object.keys(fields).forEach((field) => {
-      // Récupérer le tableau des prénoms pour ce domaine
-      const list = fields[field];
-
-      // Ajouter le nombre d'étudiants et la liste des prénoms à la string
-      // list.length = nombre d'étudiants dans ce domaine
-      // list.join(', ') = joint tous les prénoms avec des virgules
-      output += `Number of students in ${field}: ${list.length}. List: ${list.join(', ')}\n`;
-    });
-
-    // Retourner la string complète (pour le serveur)
-    return output.trim(); // trim() pour enlever le dernier saut de ligne inutile
-  } catch (err) {
-    // Si une erreur survient (fichier introuvable, etc.), lancer cette erreur
-    throw new Error('Cannot load the database');
-  }
+  });
 }
 
-// Exporter la fonction pour qu'elle soit utilisable dans d'autres fichiers
 module.exports = countStudents;
