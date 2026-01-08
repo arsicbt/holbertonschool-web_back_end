@@ -22,6 +22,8 @@ const app = http.createServer((req, res) => {
         res.end('Cannot load the database');
       });
   }
+  res.statusCode = 404;
+  res.setHeader('Content-Type', 'text/plain');
 });
 
 app.listen(1245, () => {
