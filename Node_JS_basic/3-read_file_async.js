@@ -4,7 +4,7 @@ function countStudents(path) {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf8', (err, data) => {
       if (err) {
-        reject(new Error('Cannot loooad the database'));
+        reject(new Error('Cannot load the database'));
         return;
       }
 
@@ -13,10 +13,9 @@ function countStudents(path) {
         .split('\n')
         .filter((line) => line.trim() !== '');
 
-      const students = lines.slice(1).map((line) =>
-        line.split(',').map((value) => value.trim())
-      );
-
+      const students = lines
+        .slice(1)
+        .map((line) => line.split(',').map((value) => value.trim()));
       const output = [];
       output.push(`Number of students: ${students.length}`);
 
