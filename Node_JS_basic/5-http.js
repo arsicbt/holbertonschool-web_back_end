@@ -1,10 +1,11 @@
 const http = require('http');
 const path = require('path');
 const countStudents = require('./3-read_file_async');
+const { error } = require('console');
 
-const database = process.argv[2] ? path.resolve(process.argv[2]) : null;
+const database = process.argv[2]
 
-const app = http.createServer((req, res) => {
+const app = http.createServer(async (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
 
   if (req.url === '/') {
@@ -19,13 +20,13 @@ const app = http.createServer((req, res) => {
 
     if (!database) {
       res.statusCode = 500;
-      res.end('Cannot load the database');
+      res.end('Cannot looad the database');
       return;
     }
 
-    countStudents(database)
+    await countStudents(database)
       .then((output) => {
-        res.end(output);
+        res.end(output.join('\n'));
       })
       .catch(() => {
         res.statusCode = 500;
