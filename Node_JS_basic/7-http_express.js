@@ -14,7 +14,7 @@ app.get('/students', (req, res) => {
 
   countStudents(database)
     .then((output) => {
-      res.end(output);
+      res.end(output.join('\n'));
     })
     .catch(() => {
       res.end('Cannot load the database');
