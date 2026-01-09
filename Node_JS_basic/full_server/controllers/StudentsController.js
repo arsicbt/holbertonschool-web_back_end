@@ -8,8 +8,8 @@ class StudentsController {
     readDatabase(databasePath)
       .then((data) => {
         let response = header;
-        const fields = Object.keys(data).sort((a, b) =>
-          a.toLowerCase().localeCompare(b.toLowerCase())
+        const fields = Object.keys(data).sort(
+          (a, b) => a.toLowerCase().localeCompare(b.toLowerCase()),
         );
 
         fields.forEach((field) => {

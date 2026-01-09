@@ -1,9 +1,7 @@
 const http = require('http');
-const path = require('path');
 const countStudents = require('./3-read_file_async');
-const { error } = require('console');
 
-const database = process.argv[2]
+const database = process.argv[2];
 
 const app = http.createServer(async (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
@@ -39,8 +37,5 @@ const app = http.createServer(async (req, res) => {
   res.end('Not found');
 });
 
-app.listen(1245, () => {
-  console.log('Server listening on port 1245');
-});
-
+app.listen(1245);
 module.exports = app;
