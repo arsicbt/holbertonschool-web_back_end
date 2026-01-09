@@ -3,11 +3,11 @@ import readDatabase from '../utils';
 class StudentsController {
   static getAllStudents(req, res) {
     const databasePath = process.argv[2];
+    const header = 'This is the list of our students';
 
     readDatabase(databasePath)
       .then((data) => {
-        let response = 'This is the list of our students';
-
+        let response = header;
         const fields = Object.keys(data).sort((a, b) =>
           a.toLowerCase().localeCompare(b.toLowerCase())
         );
@@ -20,7 +20,7 @@ class StudentsController {
         res.status(200).send(response);
       })
       .catch(() => {
-        res.status(500).send('Cannot load the database');
+        res.status(500).send(`${header}\nCannot load the database`);
       });
   }
 
